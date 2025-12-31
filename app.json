@@ -16,7 +16,8 @@
       "supportsTablet": true
     },
     "android": {
-      "usesCleartextTraffic": true
+      "usesCleartextTraffic": true,
+      "permissions": ["INTERNET"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

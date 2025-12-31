@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Audio } from 'expo-av';
 import { Song } from '../types/song';
 import { getSongById } from '../api/saavnApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type PlayerState = {
   sound: Audio.Sound | null;
@@ -14,12 +15,36 @@ type PlayerState = {
   playSong: (song: Song) => Promise<void>;
   togglePlay: () => Promise<void>;
   setQueue: (songs: Song[]) => void;
+
+  addToQueue: (song: Song) => void;
+  removeFromQueue: (id: string) => void;
+  loadQueue: () => Promise<void>;
 };
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
+  queue: [],
+
+  addToQueue: async (song) => {
+    const updatedQueue = [...get().queue, song];
+    set({ queue: updatedQueue });
+    await AsyncStorage.setItem('QUEUE', JSON.stringify(updatedQueue));
+  },
+
+  removeFromQueue: async (id) => {
+    const updatedQueue = get().queue.filter((s) => s.id !== id);
+    set({ queue: updatedQueue });
+    await AsyncStorage.setItem('QUEUE', JSON.stringify(updatedQueue));
+  },
+
+  loadQueue: async () => {
+    const stored = await AsyncStorage.getItem('QUEUE');
+    if (stored) {
+      set({ queue: JSON.parse(stored) });
+    }
+  },
+
   sound: null,
   currentSong: null,
-  queue: [],
   isPlaying: false,
   position: 0,
   duration: 0,

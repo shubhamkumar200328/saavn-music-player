@@ -43,6 +43,12 @@ export default function MiniPlayer() {
           {isPlaying ? '⏸' : '▶️'}
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Queue')}
+        style={{ marginLeft: 20 }}
+      >
+        <Text style={{ color: '#fff', fontSize: 16 }}>Open Queue</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }

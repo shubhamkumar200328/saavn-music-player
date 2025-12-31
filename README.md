@@ -84,6 +84,13 @@ npx expo install @react-native-async-storage/async-storage
 
 
 ```
+# APK Download
+You can download and install the Android APK from the link below:
+👉 **APK Download Link:**  
+```bash
+https://expo.dev/accounts/skumar1107/projects/saavn-music-player/builds/6602d9c1-4504-4468-b3cf-1369b723678e
+```
+
 
 Author: Shubham Kumar.
 

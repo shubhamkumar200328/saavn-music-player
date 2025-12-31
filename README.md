@@ -53,7 +53,6 @@ This structure keeps the app easy to reason about and scale.
 
 - JioSaavn audio streams are served over **HTTP CDN URLs**.  
   Android blocks such streams by default, so `usesCleartextTraffic` and explicit `INTERNET` permissions were configured.
-- Audio playback was tested on a **native Android build**, since Expo Go has limitations with HTTP media streams.
 - Album, artist, and playlist search endpoints were intentionally not implemented to keep the focus on **core playback, queue management, and state synchronization**, which were the main evaluation criteria.
 
 ---

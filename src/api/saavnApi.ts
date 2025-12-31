@@ -11,13 +11,3 @@ export const getSongById = async (id: string) => {
   const json = await res.json();
   return json.data[0];
 };
-
-// const BASE_URL = 'https://saavn.sumit.co';
-
-// export const searchSongs = async (query: string) => {
-//   const res = await fetch(
-//     `${BASE_URL}/api/search/songs?query=${encodeURIComponent(query)}`,
-//   );
-//   const json = await res.json();
-//   return json.data.results;
-// };

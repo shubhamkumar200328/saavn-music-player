@@ -17,7 +17,11 @@
     },
     "android": {
       "usesCleartextTraffic": true,
-      "permissions": ["INTERNET"]
+      "permissions": [
+        "INTERNET",
+        "INTERNET"
+      ],
+      "package": "com.anonymous.saavnmusicplayer"
     },
     "web": {
       "favicon": "./assets/favicon.png"

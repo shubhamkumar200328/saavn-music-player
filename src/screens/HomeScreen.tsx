@@ -12,36 +12,32 @@ import { Song } from '../types/song';
 import { usePlayerStore } from '../store/playerStore';
 
 export default function HomeScreen() {
-  const [query, setQuery] = useState('arijit');
+  const [query, setQuery] = useState('');
   const [songs, setSongs] = useState<Song[]>([]);
   const playSong = usePlayerStore((state) => state.playSong);
 
   const addToQueue = usePlayerStore((state) => state.addToQueue);
 
-  const fetchSongs = async () => {
-    const data = await searchSongs(query);
+  const [tab, setTab] = useState<'songs' | 'artists'>('songs');
 
-    const mappedSongs: Song[] = data.map((item: any) => {
-      const audio =
-        item.downloadUrl?.find((d: any) => d.quality === '320kbps') ||
-        item.downloadUrl?.find((d: any) => d.quality === '160kbps') ||
-        item.downloadUrl?.find((d: any) => d.quality === '96kbps');
-
-      return {
-        id: item.id,
-        name: item.name,
-        duration: Number(item.duration),
-        artists: item.primaryArtists,
-        image: item.image?.[2]?.link,
-        audioUrl: audio?.link,
-      };
-    });
-
-    setSongs(mappedSongs);
+  const fetchData = async () => {
+    if (tab === 'songs') {
+      const data = await searchSongs(query);
+      setSongs(
+        data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          duration: Number(item.duration),
+          artists: item.primaryArtists,
+          image: item.image?.[2]?.link,
+          audioUrl: undefined, // fetched later via songs API
+        })),
+      );
+    }
   };
 
   useEffect(() => {
-    fetchSongs();
+    fetchData();
   }, []);
 
   return (
@@ -57,7 +53,7 @@ export default function HomeScreen() {
         placeholder="Search songs..."
         value={query}
         onChangeText={setQuery}
-        onSubmitEditing={fetchSongs}
+        onSubmitEditing={fetchData}
         style={{
           borderWidth: 1,
           borderRadius: 8,
@@ -65,6 +61,17 @@ export default function HomeScreen() {
           marginBottom: 12,
         }}
       />
+
+      <View style={{ flexDirection: 'row', marginBottom: 12 }}>
+        <TouchableOpacity
+          onPress={() => setTab('songs')}
+          style={{ marginRight: 16 }}
+        >
+          <Text style={{ fontWeight: tab === 'songs' ? '700' : '400' }}>
+            Songs
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={songs}
@@ -78,14 +85,6 @@ export default function HomeScreen() {
               source={{ uri: item.image }}
               style={{ width: 60, height: 60, borderRadius: 6 }}
             />
-            {/* <View style={{ marginLeft: 10, flex: 1 }}>
-              <Text numberOfLines={1} style={{ fontWeight: '600' }}>
-                {item.name}
-              </Text>
-              <Text numberOfLines={1} style={{ color: 'gray' }}>
-                {item.artists}
-              </Text>
-            </View> */}
             <View
               style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
             >
